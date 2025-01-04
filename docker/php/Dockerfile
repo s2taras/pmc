@@ -1,26 +1,25 @@
-FROM php:8.2-fpm
-
-# Install required PHP extension and dependencies
-RUN apt-get update && apt-get install -y \
-    libicu-dev \
-    libzip-dev \
-    libonig-dev \
-    unzip \
-    git \
-    && docker-php-ext-install intl pdo pdo_mysql zip opcache
-
-# Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+FROM php:8.4-fpm
 
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy existing application files
-COPY src .
+# Install necessary dependencies
+RUN apt-get update && apt-get install -y libpq-dev \
+    && docker-php-ext-install pdo pdo_pgsql
 
-# Install Symfony dependicies
-RUN composer install
+# Update PHP-FPM to listen on 127.0.0.1:9001
+RUN #sed -i 's/listen = 127.0.0.1:9000/listen = 9001/' /usr/local/etc/php-fpm.d/www.conf
+RUN #sed -i 's/listen = 127.0.0.1:9000/listen = 9001/' /usr/local/etc/php-fpm.d/www.conf.default
+RUN #sed -i 's/listen = 9000/listen = 9001/' /usr/local/etc/php-fpm.d/zz-docker.conf
 
-# Set permissions for Symfony folders
-RUN chown -R www-data:www-data var
-RUN chmod -R 777 var
+# Copy application filesphp-fpm -tt
+COPY ./src /var/www/html
+
+# Set permissions
+RUN chown -R www-data:www-data /var/www/html
+
+# Expose PHP-FPM port
+#EXPOSE 9001
+
+# Start PHP-FPM
+CMD ["php-fpm"]
