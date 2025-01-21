@@ -2,18 +2,39 @@ version: '3.9'
 
 services:
   app:
-    image: php:8.4-fpm
-#    build:
-#      context: .
-#      dockerfile: ./docker/php/Dockerfile
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
     container_name: pmc_app
     working_dir: /var/www/html
     volumes:
       - ./src:/var/www/html
 #    ports:
 #      - "9001:9001"
-#    networks:
-#      - pmc_network
+    networks:
+      - pmc_network
+
+  gearmand:
+    image: dockage/gearmand
+    container_name: pmc_gearman
+    depends_on:
+      - app
+    networks:
+      - pmc_network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: pmc_rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER = guest
+      - RABBITMQ_DEFAULT_PASS = guest
+    depends_on:
+      - app
+    ports:
+      - "35672:5672" # code
+      - "25672:15672" # web interface
+    networks:
+      - pmc_network
 
   nginx:
     image: nginx:1.23.4
@@ -26,8 +47,8 @@ services:
       - "8080:80"
     depends_on:
       - app
-#    networks:
-#      - pmc_network
+    networks:
+      - pmc_network
 
 #  db:
 #    image: mysql:8.0.33
@@ -44,6 +65,6 @@ services:
 #    volumes:
 #      - ./docker/mysql/data:/var/lib/mysql
 
-#networks:
-#  pmc_network:
-#    driver: bridge
+networks:
+  pmc_network:
+    driver: bridge

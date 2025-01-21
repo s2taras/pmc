@@ -1,25 +1,23 @@
-FROM php:8.4-fpm
+FROM php:8.3-fpm
 
 # Set working directory
 WORKDIR /var/www/html
 
 # Install necessary dependencies
-RUN apt-get update && apt-get install -y libpq-dev \
+#RUN apt-get update && apt-get install -y libpq-dev supervisor \
+RUN apt-get update && apt-get install -y libpq-dev zip unzip \
     && docker-php-ext-install pdo pdo_pgsql
 
-# Update PHP-FPM to listen on 127.0.0.1:9001
-RUN #sed -i 's/listen = 127.0.0.1:9000/listen = 9001/' /usr/local/etc/php-fpm.d/www.conf
-RUN #sed -i 's/listen = 127.0.0.1:9000/listen = 9001/' /usr/local/etc/php-fpm.d/www.conf.default
-RUN #sed -i 's/listen = 9000/listen = 9001/' /usr/local/etc/php-fpm.d/zz-docker.conf
+#RUN mkdir -p /var/log/supervisor
+#COPY docker/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Copy application filesphp-fpm -tt
-COPY ./src /var/www/html
+# install composer
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html
+RUN curl -sSLf \
+        -o /usr/local/bin/install-php-extensions \
+        https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions && \
+    chmod +x /usr/local/bin/install-php-extensions && \
+    install-php-extensions php/pecl-networking-gearman@gearman-2.1.2
 
-# Expose PHP-FPM port
-#EXPOSE 9001
-
-# Start PHP-FPM
-CMD ["php-fpm"]
+#CMD ["/usr/bin/supervisord"]
