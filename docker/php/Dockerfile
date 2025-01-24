@@ -11,7 +11,9 @@ ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="1" \
 # Install necessary dependencies
 #RUN apt-get update && apt-get install -y libpq-dev supervisor \
 RUN apt-get update && apt-get install -y libpq-dev zip unzip \
-    && docker-php-ext-install pdo pdo_pgsql sockets opcache
+    && pecl install redis \
+    && docker-php-ext-install pdo pdo_pgsql sockets opcache \
+    && docker-php-ext-enable redis
 
 #RUN mkdir -p /var/log/supervisor
 #COPY docker/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf

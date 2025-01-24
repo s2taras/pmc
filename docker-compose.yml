@@ -34,6 +34,16 @@ services:
     networks:
       - pmc_network
 
+  redis:
+    image: redis:7.4
+    container_name: pmc_redis
+    #ports:
+    #  - "6379:6379"
+    depends_on:
+      - app
+    networks:
+      - pmc_network
+
   nginx:
     image: nginx:1.23.4
     container_name: pmc_nginx
