@@ -44,6 +44,17 @@ services:
     networks:
       - pmc_network
 
+#  socket:
+#    image: node
+#    container_name: pmc_socket
+#    user: "node"
+#    volumes:
+#      - ./src/socket:/home/node/app
+#    ports:
+#      - "5005:5000"
+#    working_dir: /home/node/app
+#    command: "npm start"
+
   nginx:
     image: nginx:1.23.4
     container_name: pmc_nginx

@@ -3,5 +3,6 @@
 // var_dump(opcache_get_status());
 // print_r(phpinfo());
 
-echo "Hello World!";
+require_once 'index.html';
+
 exit;
