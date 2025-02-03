@@ -34,12 +34,12 @@ function reverse_fn(GearmanJob $job)
     # Этот цикл не является необходимым, но показывает как выполняется работа
     for ($x = 0; $x < $workload_size; $x++) {
         echo "Sending status: " . ($x + 1) . "/$workload_size complete\n";
-        $job->sendStatus($x+1, $workload_size);
+        $job->sendStatus($x + 1, $workload_size);
         $job->sendData(substr($workload, $x, 1));
         sleep(1);
     }
 
-    $result= strrev($workload);
+    $result = strrev($workload);
     echo "Result: $result\n";
 
     # Возвращаем, когда необходимо отправить результат обратно клиенту.

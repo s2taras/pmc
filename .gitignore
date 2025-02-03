@@ -2,3 +2,4 @@
 docker/mysql/data/
 src/vendor
 src/socket/node_modules
+src/.php-cs-fixer.cache

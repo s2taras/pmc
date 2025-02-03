@@ -28,22 +28,27 @@ if (!$client->runTasks()) {
 
 echo "DONE\n";
 
-function reverse_created(GearmanTask $task) {
+function reverse_created(GearmanTask $task)
+{
     echo "CREATED: " . $task->jobHandle() . PHP_EOL;
 }
 
-function reverse_data(GearmanTask $task) {
+function reverse_data(GearmanTask $task)
+{
     echo "DATA: " . $task->data() . PHP_EOL;
 }
 
-function reverse_status(GearmanTask $task) {
+function reverse_status(GearmanTask $task)
+{
     echo "STATUS: " . $task->jobHandle() . ' - ' . $task->taskNumerator() . ' / ' . $task->taskDenominator() . PHP_EOL;
 }
 
-function reverse_complete(GearmanTask $task) {
+function reverse_complete(GearmanTask $task)
+{
     echo "COMPLETE: " . $task->jobHandle() . ', ' . $task->data() . PHP_EOL;
 }
 
-function reverse_fail(GearmanTask $task) {
+function reverse_fail(GearmanTask $task)
+{
     echo "FAILED: " . $task->jobHandle() . PHP_EOL;
 }
