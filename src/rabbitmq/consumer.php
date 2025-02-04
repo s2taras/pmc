@@ -10,7 +10,11 @@ $channel->queue_declare('hello', false, false, false, false);
 
 echo " [*] Waiting for messages. To exit press CTRL+C\n";
 
-$callback = function ($msq) {
+/**
+ * @param \PhpAmqpLib\Message\AMQPMessage $msq
+ * @return void
+ */
+$callback = function (\PhpAmqpLib\Message\AMQPMessage $msq): void {
     echo " [x] Received: {$msq->body}\n";
 };
 
