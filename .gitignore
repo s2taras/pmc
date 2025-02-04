@@ -1,5 +1,8 @@
 .idea
 docker/mysql/data/
-src/vendor
-src/socket/node_modules
-src/.php-cs-fixer.cache
+
+
+
+src/practice/vendor
+src/practice/socket/node_modules
+src/practice/.php-cs-fixer.cache
