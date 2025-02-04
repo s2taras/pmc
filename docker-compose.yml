@@ -12,49 +12,6 @@ services:
     networks:
       - pmc_network
 
-  gearmand:
-    image: dockage/gearmand
-    container_name: pmc_gearman
-    depends_on:
-      - app
-    networks:
-      - pmc_network
-
-  # http://localhost:25672/#/queues
-  rabbitmq:
-    image: rabbitmq:3-management
-    container_name: pmc_rabbitmq
-    environment:
-      - RABBITMQ_DEFAULT_USER = guest
-      - RABBITMQ_DEFAULT_PASS = guest
-    depends_on:
-      - app
-    ports:
-      - "25672:15672" # web interface
-    networks:
-      - pmc_network
-
-  redis:
-    image: redis:7.4
-    container_name: pmc_redis
-    #ports:
-    #  - "6379:6379"
-    depends_on:
-      - app
-    networks:
-      - pmc_network
-
-#  socket:
-#    image: node
-#    container_name: pmc_socket
-#    user: "node"
-#    volumes:
-#      - ./src/socket:/home/node/app
-#    ports:
-#      - "5005:5000"
-#    working_dir: /home/node/app
-#    command: "npm start"
-
   nginx:
     image: nginx:1.23.4
     container_name: pmc_nginx
@@ -68,6 +25,49 @@ services:
       - app
     networks:
       - pmc_network
+
+#  gearmand:
+#    image: dockage/gearmand
+#    container_name: pmc_gearman
+#    depends_on:
+#      - app
+#    networks:
+#      - pmc_network
+
+#  # http://localhost:25672/#/queues
+#  rabbitmq:
+#    image: rabbitmq:3-management
+#    container_name: pmc_rabbitmq
+#    environment:
+#      - RABBITMQ_DEFAULT_USER = guest
+#      - RABBITMQ_DEFAULT_PASS = guest
+#    depends_on:
+#      - app
+#    ports:
+#      - "25672:15672" # web interface
+#    networks:
+#      - pmc_network
+
+#  redis:
+#    image: redis:7.4
+#    container_name: pmc_redis
+#    #ports:
+#    #  - "6379:6379"
+#    depends_on:
+#      - app
+#    networks:
+#      - pmc_network
+
+#  socket:
+#    image: node
+#    container_name: pmc_socket
+#    user: "node"
+#    volumes:
+#      - ./src/socket:/home/node/app
+#    ports:
+#      - "5005:5000"
+#    working_dir: /home/node/app
+#    command: "npm start"
 
 #  db:
 #    image: mysql:8.0.33
